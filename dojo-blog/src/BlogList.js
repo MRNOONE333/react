@@ -1,4 +1,4 @@
-const BlogList = ({blogs,title,handleDelete}) => {
+const BlogList = ({blogs,title}) => {
 
     // alternate syntax
     // const BlogList = (props) => {
@@ -14,12 +14,11 @@ const BlogList = ({blogs,title,handleDelete}) => {
                     <h2>{blog.title}</h2>
                     <p>{blog.author}</p>
                     <p>Written by {blog.author} </p>
-                    <button onClick={()=>handleDelete(blog.id)}>Delete blog</button>
                 </div>
             ))
         }
         </div>
      );
 }
- 
+
 export default BlogList;

@@ -19,35 +19,38 @@ const Home =() =>{
     //     setName('wow');
     // }
 
-    const [blogs,setBlog]= useState([
-        { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1 },
-        { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
-        { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
-      ]);
+    const [blogs,setBlog]= useState(null);
+    const [isPending,setIsPending ]= useState(true);
 
-      const handleDelete=(id)=>{
-        const newBlogs=  blogs.filter(blog => blog.id !== id);
-        setBlog(newBlogs);
-      }
-
-      const [name,setName]= useState('mario');
     //   use effect 
 
     useEffect(()=>{
-        console.log('use effect called');
-        console.log(name);
-        //this  controls depedency how ,what inffluences the useEffect behaviour. 
-    } , [name]);
+      setTimeout(() => {
+        fetch('http://localhost:8000/blogs')
+        // this is async
+          .then(res=>{
+            return res.json();// this is also async
+          })
+          .then(data=>{
+            console.log(data);
+            setBlog(data);
+            setIsPending(false);
+          }
+          );
+      }, 1000);
+        // []--> this  controls depedency how ,what inffluences the useEffect behaviour. 
+    } , []);
 
     return (
         <div className="home">
-        
+
+
+        {isPending && <div>Loading.....</div>}
         {/* props usage */}
-        <BlogList  blogs={blogs}  title="All Title!"  handleDelete={handleDelete}/> 
+        {blogs && <BlogList  blogs={blogs}  title="All Title!" /> }
+        
         {/* <BlogList  blogs={blogs.filter((blog)=>blog.author=== 'mario')}  title="Mario's Blog"/> */}
 
-        <button onClick={()=> setName('luigi')}>change name</button>
-        <p>{name}</p>
 
 
         {/*<p>{name}</p>*/}
