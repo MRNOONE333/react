@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import BlogList from "./BlogList";
+import useFetch from "./useFetch";
 
 const Home =() =>{
     
@@ -19,32 +20,15 @@ const Home =() =>{
     //     setName('wow');
     // }
 
-    const [blogs,setBlog]= useState(null);
-    const [isPending,setIsPending ]= useState(true);
 
-    //   use effect 
-
-    useEffect(()=>{
-      setTimeout(() => {
-        fetch('http://localhost:8000/blogs')
-        // this is async
-          .then(res=>{
-            return res.json();// this is also async
-          })
-          .then(data=>{
-            console.log(data);
-            setBlog(data);
-            setIsPending(false);
-          }
-          );
-      }, 1000);
-        // []--> this  controls depedency how ,what inffluences the useEffect behaviour. 
-    } , []);
+    // grab the data but cal it blogs or we can pass data here-{blogs && <BlogList  blogs={data} 
+    const {data:blogs,isPending,error} = useFetch('http://localhost:8000/blogs');
 
     return (
         <div className="home">
 
-
+        {/*ONly if there is an value for an error then it will show in the web page--*/}
+        {error && <div>{error}</div>}
         {isPending && <div>Loading.....</div>}
         {/* props usage */}
         {blogs && <BlogList  blogs={blogs}  title="All Title!" /> }
